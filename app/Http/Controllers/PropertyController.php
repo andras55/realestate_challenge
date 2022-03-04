@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use App\Rules\BathroomRule;
+use App\Rules\CountryRule;
 class PropertyController extends Controller
 {
     /**
@@ -36,23 +39,46 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
+
         try {
-            $property = Property::create([
-                'name' => $request->name,
-                'real_estate_type' => $request->real_estate_type,
-                'street' => $request->street,
-                'external_number' => $request->external_number,
-                'internal_number' => isset($request->internal_number) ? $request->internal_number : '',
-                'neighborhood' => $request->neighborhood,
-                'city' => $request->city,
-                'country' => $request->country,
-                'rooms' => $request->rooms,
-                'bathrooms' => $request->bathrooms,
-                'comments' => $request->comments
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'real_estate_type' => ['required', Rule::in(['house', 'departament', 'land', 'commercial_ground'])],
+                'street' => 'required',
+                'external_number' => 'required',
+                'internal_number' => [
+                    Rule::requiredIf(function () use ($request){
+                        $ret = $request->real_estate_type;
+                        return ($ret == 'departament' || $ret == 'commercial_ground');
+                    })
+                ],
+                'neighborhood' => 'required',
+                'city' => 'required',
+                'country' => ['required', new CountryRule],
+                'rooms' => 'required',
+                'bathrooms' => new BathroomRule($request->real_estate_type),
             ]);
+            if ($validator->fails()) {
+                return response()->json([$validator->errors()]);
+            }
+            else{
+                $property = Property::create([
+                    'name' => $request->name,
+                    'real_estate_type' => $request->real_estate_type,
+                    'street' => $request->street,
+                    'external_number' => $request->external_number,
+                    'internal_number' => $request->internal_number,
+                    'neighborhood' => $request->neighborhood,
+                    'city' => $request->city,
+                    'country' => $request->country,
+                    'rooms' => $request->rooms,
+                    'bathrooms' => $request->bathrooms,
+                    'comments' => $request->comments
+                ]);
+            }
             return response()->json([['message' => 'Property saved successfully'],$property]);            
         } catch (Exception $e) {
-            return response()->json([['message' => $e->getMessage()]]);
+            return response()->json([['message' => $e->getMessage()]], 422);
         }
 
     }
@@ -101,27 +127,48 @@ class PropertyController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $property = Property::find($id);
-            if (isset($property)) {
-                $property->update([
-                    'name' => $request->name,
-                    'real_estate_type' => $request->real_estate_type,
-                    'street' => $request->street,
-                    'external_number' => $request->external_number,
-                    'internal_number' => isset($request->internal_number) ? $request->internal_number : '',
-                    'neighborhood' => $request->neighborhood,
-                    'city' => $request->city,
-                    'country' => $request->country,
-                    'rooms' => $request->rooms,
-                    'bathrooms' => $request->bathrooms,
-                    'comments' => $request->comments
-                ]);
-                return response()->json([['message' => 'Property updated successfully'],$property]); 
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'real_estate_type' => ['required', Rule::in(['house', 'departament', 'land', 'commercial_ground'])],
+                'street' => 'required',
+                'external_number' => 'required',
+                'internal_number' => [
+                    Rule::requiredIf(function () use ($request){
+                        $ret = $request->real_estate_type;
+                        return ($ret == 'departament' || $ret == 'commercial_ground');
+                    })
+                ],
+                'neighborhood' => 'required',
+                'city' => 'required',
+                'country' => ['required', new CountryRule],
+                'rooms' => 'required',
+                'bathrooms' => new BathroomRule($request->real_estate_type),
+            ]);
+            if ($validator->fails()) {
+                return response()->json([$validator->errors()]);
             }
             else{
-                return response()->json([['message' => 'Record: '.$id.' doesn\'t exist']]);
-            }
-           
+                $property = Property::find($id);
+                if (isset($property)) {
+                    $property->update([
+                        'name' => $request->name,
+                        'real_estate_type' => $request->real_estate_type,
+                        'street' => $request->street,
+                        'external_number' => $request->external_number,
+                        'internal_number' => $request->internal_number,
+                        'neighborhood' => $request->neighborhood,
+                        'city' => $request->city,
+                        'country' => $request->country,
+                        'rooms' => $request->rooms,
+                        'bathrooms' => $request->bathrooms,
+                        'comments' => $request->comments
+                    ]);
+                    return response()->json([['message' => 'Property updated successfully'],$property]);                
+                }
+                else{
+                    return response()->json([['message' => 'Record: '.$id.' doesn\'t exist']]);
+                }
+            }           
         } catch (Exception $e) {
             return response()->json([['message' => $e->getMessage()]]);            
         }
