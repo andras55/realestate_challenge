@@ -36,7 +36,21 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $property = Property::create([
+            'name' => $request->name,
+            'real_estate_type' => $request->real_estate_type,
+            'street' => $request->street,
+            'external_number' => $request->external_number,
+            'internal_number' => isset($request->internal_number) ? $request->internal_number : '',
+            'neighborhood' => $request->neighborhood,
+            'city' => $request->city,
+            'country' => $request->country,
+            'rooms' => $request->rooms,
+            'bathrooms' => $request->bathrooms,
+            'comments' => $request->comments
+        ]);
+
+        return response()->json([['message' => 'Property saved successfully'],$property]);
     }
 
     /**
@@ -70,7 +84,20 @@ class PropertyController extends Controller
      */
     public function update(Request $request, Property $property)
     {
-        //
+        $property->update([
+            'name' => $request->name,
+            'real_estate_type' => $request->real_estate_type,
+            'street' => $request->street,
+            'external_number' => $request->external_number,
+            'internal_number' => isset($request->internal_number) ? $request->internal_number : '',
+            'neighborhood' => $request->neighborhood,
+            'city' => $request->city,
+            'country' => $request->country,
+            'rooms' => $request->rooms,
+            'bathrooms' => $request->bathrooms,
+            'comments' => $request->comments
+        ]);
+        return response()->json([['message' => 'Property updated successfully'],$property]);
     }
 
     /**
