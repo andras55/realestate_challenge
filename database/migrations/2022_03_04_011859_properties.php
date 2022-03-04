@@ -19,7 +19,7 @@ class Properties extends Migration
             $table->enum('real_estate_type', ['house', 'departament', 'land', 'commercial_ground']);
             $table->string('street', 128);
             $table->string('external_number', 12);
-            $table->string('internal_number', 12);
+            $table->string('internal_number', 12)->nullable();
             $table->string('neighborhood', 128);
             $table->string('city', 64);
             $table->string('country', 2);
