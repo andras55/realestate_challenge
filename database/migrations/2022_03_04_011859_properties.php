@@ -24,7 +24,7 @@ class Properties extends Migration
             $table->string('city', 64);
             $table->string('country', 2);
             $table->integer('rooms');
-            $table->decimal('bathrooms');
+            $table->decimal('bathrooms', 2, 1);
             $table->string('comments', 128)->nullable();
             $table->timestamps();
             $table->softDeletes();
