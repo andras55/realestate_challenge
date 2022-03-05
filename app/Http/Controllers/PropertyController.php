@@ -6,6 +6,8 @@ use App\Models\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Rules\ExternalNumberRule;
+use App\Rules\InternalNumberRule;
 use App\Rules\BathroomRule;
 use App\Rules\CountryRule;
 class PropertyController extends Controller
@@ -45,12 +47,13 @@ class PropertyController extends Controller
                 'name' => 'required',
                 'real_estate_type' => ['required', Rule::in(['house', 'departament', 'land', 'commercial_ground'])],
                 'street' => 'required',
-                'external_number' => 'required',
+                'external_number' => ['required', new ExternalNumberRule],
                 'internal_number' => [
                     Rule::requiredIf(function () use ($request){
                         $ret = $request->real_estate_type;
                         return ($ret == 'departament' || $ret == 'commercial_ground');
-                    })
+                    }),
+                    new InternalNumberRule
                 ],
                 'neighborhood' => 'required',
                 'city' => 'required',
@@ -131,12 +134,13 @@ class PropertyController extends Controller
                 'name' => 'required',
                 'real_estate_type' => ['required', Rule::in(['house', 'departament', 'land', 'commercial_ground'])],
                 'street' => 'required',
-                'external_number' => 'required',
+                'external_number' => ['required', new ExternalNumberRule],
                 'internal_number' => [
                     Rule::requiredIf(function () use ($request){
                         $ret = $request->real_estate_type;
                         return ($ret == 'departament' || $ret == 'commercial_ground');
-                    })
+                    }),
+                    new InternalNumberRule
                 ],
                 'neighborhood' => 'required',
                 'city' => 'required',

@@ -175,3 +175,73 @@ Output Example
         "deleted_at": "2022-03-05T18:33:25.000000Z"
     }
 ]`
+
+## Validations
+### Response examples
+#### Required
+`    {
+        "name": [
+            "The name field is required."
+        ],
+        "real_estate_type": [
+            "The real estate type field is required."
+        ],
+        "street": [
+            "The street field is required."
+        ],
+        "external_number": [
+            "The external number field is required."
+        ],
+        "neighborhood": [
+            "The neighborhood field is required."
+        ],
+        "city": [
+            "The city field is required."
+        ],
+        "country": [
+            "The country field is required."
+        ],
+        "rooms": [
+            "The rooms field is required."
+        ]
+    }`
+
+### Real Estate Type
+`[
+    {
+        "real_estate_type": [
+            "The selected real estate type is invalid."
+        ]
+    }
+]`
+
+### Bathrooms
+`[
+    {
+        "bathrooms": [
+            "The number of bathrooms only can be zero when the real estate type is land or commercial ground"
+        ]
+    }
+]`
+
+### Country
+`[
+    {
+        "country": [
+            "The country must be a code under ISO 3166-Alpha2"
+        ]
+    }
+]`
+
+### External and Internal numbers
+`[
+    {
+        "external_number": [
+            "External Number only accepts alphanumeric characters and dash."
+        ],
+        "internal_number": [
+            "Internal Number only accepts alphanumeric characters, dash and blank spaces."
+        ]
+    }
+]`
+
