@@ -1,64 +1,177 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Developer Challenge
+## API Laravel to Real Estate properties
+### Route list:
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+#### List
+Method: GET
+>api/properties
 
-## About Laravel
+Output example:
+`[
+    {
+        "message": "List of properties"
+    },
+    [
+        {
+            "id": 1,
+            "name": "House 971 Bahringer Walks",
+            "real_estate_type": "house",
+            "city": "Donniehaven",
+            "country": "ML"
+        },
+        {
+            "id": 2,
+            "name": "Departament 657 Desiree Circle",
+            "real_estate_type": "departament",
+            "city": "Aftontown",
+            "country": "BR"
+        },
+        {
+            "id": 3,
+            "name": "Commercial ground 54677 Bins Green",
+            "real_estate_type": "commercial_ground",
+            "city": "West Lora",
+            "country": "ST"
+        }
+    ]
+]`
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+#### Show
+Method: GET
+>api/properties/{property_id}
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Output Example
+`api/properties/30`
+`{
+    "id": 30,
+    "name": "Departament 5900 Alec Islands",
+    "real_estate_type": "departament",
+    "street": "Alec Islands",
+    "external_number": "5900",
+    "internal_number": "18 eq",
+    "neighborhood": "fugit",
+    "city": "Nienowmouth",
+    "country": "AX",
+    "rooms": 8,
+    "bathrooms": "0.5",
+    "comments": "Repellat eveniet at rerum quam. Et quam et et sit. Ea quaerat magnam explicabo quidem impedit.",
+    "created_at": "2022-03-04T21:06:52.000000Z",
+    "updated_at": "2022-03-04T21:06:52.000000Z",
+    "deleted_at": null
+}`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#### Add
+Method: POST
+>api/properties
 
-## Learning Laravel
+Input Example
+`{
+    "name": "Super Departament 703 Nadia Park",
+    "real_estate_type": "departament",
+    "street": "Nadia Park",
+    "external_number": "703",
+    "internal_number": "1A",
+    "neighborhood": "et",
+    "city": "Veracruz",
+    "country": "MX",
+    "rooms": 7,
+    "bathrooms": "1.5",
+    "comments": "Ningun comentario"
+}`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Output Example
+`[
+    {
+        "message": "Property saved successfully"
+    },
+    {
+        "name": "Super Departament 703 Nadia Park",
+        "real_estate_type": "departament",
+        "street": "Nadia Park",
+        "external_number": "703",
+        "internal_number": "1A",
+        "neighborhood": "et",
+        "city": "Veracruz",
+        "country": "MX",
+        "rooms": 7,
+        "bathrooms": "1.5",
+        "comments": "Ningun comentario",
+        "updated_at": "2022-03-05T18:22:57.000000Z",
+        "created_at": "2022-03-05T18:22:57.000000Z",
+        "id": 31
+    }
+]`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#### Update
+Method: PUT
+>api/properties/{property_id}
 
-## Laravel Sponsors
+Input Example
+`api/properties/31`
+`{
+    "name": "Super Land 703 Nadia Park",
+    "real_estate_type": "land",
+    "street": "Nadia Park",
+    "external_number": "703",
+    "internal_number": "",
+    "neighborhood": "et",
+    "city": "Veracruz",
+    "country": "MX",
+    "rooms": 7,
+    "bathrooms": "0.5",
+    "comments": "Ningun comentario"
+}`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Output Example
+`api/properties/31`
+`[
+    {
+        "message": "Property updated successfully"
+    },
+    {
+        "id": 31,
+        "name": "Super Land 703 Nadia Park",
+        "real_estate_type": "land",
+        "street": "Nadia Park",
+        "external_number": "703",
+        "internal_number": null,
+        "neighborhood": "et",
+        "city": "Veracruz",
+        "country": "MX",
+        "rooms": 7,
+        "bathrooms": "0.5",
+        "comments": "Ningun comentario",
+        "created_at": "2022-03-05T18:22:57.000000Z",
+        "updated_at": "2022-03-05T18:27:50.000000Z",
+        "deleted_at": null
+    }
+]`
 
-### Premium Partners
+#### Delete
+Method: DELETE
+>api/properties/{property_id}
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Output Example
+`api/properties/31`
+`[
+    {
+        "message": "Property deleted successfully"
+    },
+    {
+        "id": 31,
+        "name": "Super Land 703 Nadia Park",
+        "real_estate_type": "land",
+        "street": "Nadia Park",
+        "external_number": "703",
+        "internal_number": null,
+        "neighborhood": "et",
+        "city": "Veracruz",
+        "country": "MX",
+        "rooms": 7,
+        "bathrooms": "0.5",
+        "comments": "Ningun comentario",
+        "created_at": "2022-03-05T18:22:57.000000Z",
+        "updated_at": "2022-03-05T18:33:25.000000Z",
+        "deleted_at": "2022-03-05T18:33:25.000000Z"
+    }
+]`
