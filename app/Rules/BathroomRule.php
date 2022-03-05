@@ -27,7 +27,7 @@ class BathroomRule implements Rule
     {
         
         $ret = $this->ret;
-        if (($ret != 'land' || $ret != 'commercial_ground') && (int) $value == 0) {
+        if (($ret != 'land' || $ret != 'commercial_ground') && $value == 0) {
             return false;
         }
         else{
